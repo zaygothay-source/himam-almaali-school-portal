@@ -12,6 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as SchoolRouteImport } from './routes/school'
+import { Route as PortalIndexRouteImport } from './routes/portal.index'
+import { Route as PortalActivitiesRouteImport } from './routes/portal.activities'
+import { Route as PortalAssignmentsRouteImport } from './routes/portal.assignments'
+import { Route as PortalExamsRouteImport } from './routes/portal.exams'
+import { Route as PortalGradesRouteImport } from './routes/portal.grades'
+import { Route as PortalProfileRouteImport } from './routes/portal.profile'
+import { Route as PortalScheduleRouteImport } from './routes/portal.schedule'
+import { Route as PortalSettingsRouteImport } from './routes/portal.settings'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,34 +36,130 @@ const SchoolRoute = SchoolRouteImport.update({
   path: '/school',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalIndexRoute = PortalIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalActivitiesRoute = PortalActivitiesRouteImport.update({
+  id: '/activities',
+  path: '/activities',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalAssignmentsRoute = PortalAssignmentsRouteImport.update({
+  id: '/assignments',
+  path: '/assignments',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalExamsRoute = PortalExamsRouteImport.update({
+  id: '/exams',
+  path: '/exams',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalGradesRoute = PortalGradesRouteImport.update({
+  id: '/grades',
+  path: '/grades',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalProfileRoute = PortalProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalScheduleRoute = PortalScheduleRouteImport.update({
+  id: '/schedule',
+  path: '/schedule',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalSettingsRoute = PortalSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => PortalRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/portal': typeof PortalRoute
+  '/portal': typeof PortalRouteWithChildren
   '/school': typeof SchoolRoute
+  '/portal/activities': typeof PortalActivitiesRoute
+  '/portal/assignments': typeof PortalAssignmentsRoute
+  '/portal/exams': typeof PortalExamsRoute
+  '/portal/grades': typeof PortalGradesRoute
+  '/portal/profile': typeof PortalProfileRoute
+  '/portal/schedule': typeof PortalScheduleRoute
+  '/portal/settings': typeof PortalSettingsRoute
+  '/portal/': typeof PortalIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/portal': typeof PortalRoute
   '/school': typeof SchoolRoute
+  '/portal/activities': typeof PortalActivitiesRoute
+  '/portal/assignments': typeof PortalAssignmentsRoute
+  '/portal/exams': typeof PortalExamsRoute
+  '/portal/grades': typeof PortalGradesRoute
+  '/portal/profile': typeof PortalProfileRoute
+  '/portal/schedule': typeof PortalScheduleRoute
+  '/portal/settings': typeof PortalSettingsRoute
+  '/portal': typeof PortalIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/portal': typeof PortalRoute
+  '/portal': typeof PortalRouteWithChildren
   '/school': typeof SchoolRoute
+  '/portal/activities': typeof PortalActivitiesRoute
+  '/portal/assignments': typeof PortalAssignmentsRoute
+  '/portal/exams': typeof PortalExamsRoute
+  '/portal/grades': typeof PortalGradesRoute
+  '/portal/profile': typeof PortalProfileRoute
+  '/portal/schedule': typeof PortalScheduleRoute
+  '/portal/settings': typeof PortalSettingsRoute
+  '/portal/': typeof PortalIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/portal' | '/school'
+  fullPaths:
+    | '/'
+    | '/portal'
+    | '/school'
+    | '/portal/activities'
+    | '/portal/assignments'
+    | '/portal/exams'
+    | '/portal/grades'
+    | '/portal/profile'
+    | '/portal/schedule'
+    | '/portal/settings'
+    | '/portal/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/portal' | '/school'
-  id: '__root__' | '/' | '/portal' | '/school'
+  to:
+    | '/'
+    | '/school'
+    | '/portal/activities'
+    | '/portal/assignments'
+    | '/portal/exams'
+    | '/portal/grades'
+    | '/portal/profile'
+    | '/portal/schedule'
+    | '/portal/settings'
+    | '/portal'
+  id:
+    | '__root__'
+    | '/'
+    | '/portal'
+    | '/school'
+    | '/portal/activities'
+    | '/portal/assignments'
+    | '/portal/exams'
+    | '/portal/grades'
+    | '/portal/profile'
+    | '/portal/schedule'
+    | '/portal/settings'
+    | '/portal/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  PortalRoute: typeof PortalRoute
+  PortalRoute: typeof PortalRouteWithChildren
   SchoolRoute: typeof SchoolRoute
 }
 
@@ -82,12 +186,93 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SchoolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/': {
+      id: '/portal/'
+      path: '/'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof PortalIndexRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/activities': {
+      id: '/portal/activities'
+      path: '/activities'
+      fullPath: '/portal/activities'
+      preLoaderRoute: typeof PortalActivitiesRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/assignments': {
+      id: '/portal/assignments'
+      path: '/assignments'
+      fullPath: '/portal/assignments'
+      preLoaderRoute: typeof PortalAssignmentsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/exams': {
+      id: '/portal/exams'
+      path: '/exams'
+      fullPath: '/portal/exams'
+      preLoaderRoute: typeof PortalExamsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/grades': {
+      id: '/portal/grades'
+      path: '/grades'
+      fullPath: '/portal/grades'
+      preLoaderRoute: typeof PortalGradesRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/profile': {
+      id: '/portal/profile'
+      path: '/profile'
+      fullPath: '/portal/profile'
+      preLoaderRoute: typeof PortalProfileRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/schedule': {
+      id: '/portal/schedule'
+      path: '/schedule'
+      fullPath: '/portal/schedule'
+      preLoaderRoute: typeof PortalScheduleRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/settings': {
+      id: '/portal/settings'
+      path: '/settings'
+      fullPath: '/portal/settings'
+      preLoaderRoute: typeof PortalSettingsRouteImport
+      parentRoute: typeof PortalRoute
+    }
   }
 }
 
+interface PortalRouteChildren {
+  PortalActivitiesRoute: typeof PortalActivitiesRoute
+  PortalAssignmentsRoute: typeof PortalAssignmentsRoute
+  PortalExamsRoute: typeof PortalExamsRoute
+  PortalGradesRoute: typeof PortalGradesRoute
+  PortalProfileRoute: typeof PortalProfileRoute
+  PortalScheduleRoute: typeof PortalScheduleRoute
+  PortalSettingsRoute: typeof PortalSettingsRoute
+  PortalIndexRoute: typeof PortalIndexRoute
+}
+
+const PortalRouteChildren: PortalRouteChildren = {
+  PortalActivitiesRoute: PortalActivitiesRoute,
+  PortalAssignmentsRoute: PortalAssignmentsRoute,
+  PortalExamsRoute: PortalExamsRoute,
+  PortalGradesRoute: PortalGradesRoute,
+  PortalProfileRoute: PortalProfileRoute,
+  PortalScheduleRoute: PortalScheduleRoute,
+  PortalSettingsRoute: PortalSettingsRoute,
+  PortalIndexRoute: PortalIndexRoute,
+}
+
+const PortalRouteWithChildren =
+  PortalRoute._addFileChildren(PortalRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  PortalRoute: PortalRoute,
+  PortalRoute: PortalRouteWithChildren,
   SchoolRoute: SchoolRoute,
 }
 export const routeTree = rootRouteImport
