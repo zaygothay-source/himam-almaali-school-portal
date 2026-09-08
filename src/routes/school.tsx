@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import heroAsset from "../assets/hero.png.asset.json";
 import newsAsset from "../assets/news.png.asset.json";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/school")({
   component: Index,
   head: () => ({
     meta: [
