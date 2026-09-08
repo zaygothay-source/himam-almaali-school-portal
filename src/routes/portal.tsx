@@ -33,7 +33,7 @@ export const Route = createFileRoute("/portal")({
 });
 
 const nav = [
-  { to: "/portal", label: "Dashboard", icon: LayoutDashboard, exact: true },
+  { to: "/portal", label: "Dashboard", icon: LayoutDashboard },
   { to: "/portal/grades", label: "Grades", icon: GraduationCap },
   { to: "/portal/assignments", label: "Assignments", icon: ClipboardList },
   { to: "/portal/activities", label: "Activities", icon: Target },
@@ -72,7 +72,7 @@ function PortalLayout() {
         <Link
           key={item.to}
           to={item.to}
-          activeOptions={{ exact: "exact" in item ? item.exact : false }}
+          activeOptions={{ exact: item.to === "/portal" }}
           activeProps={{ className: "bg-primary/15 text-primary" }}
           inactiveProps={{ className: "text-muted-foreground hover:bg-muted/60 hover:text-foreground" }}
           className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors"
