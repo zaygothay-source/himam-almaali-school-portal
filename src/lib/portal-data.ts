@@ -2,8 +2,7 @@ export type Subject = {
   id: string;
   name: string;
   teacher: string;
-  grade: string;
-  percentage: number;
+  mark: number;
   recent: { title: string; score: string }[];
 };
 
@@ -12,154 +11,73 @@ export const subjects: Subject[] = [
     id: "math",
     name: "Mathematics",
     teacher: "Ms. Halloran",
-    grade: "A-",
-    percentage: 91,
+    mark: 18,
     recent: [
-      { title: "Quadratics test", score: "92%" },
-      { title: "Problem set 6", score: "88%" },
-      { title: "Midterm", score: "94%" },
+      { title: "Quadratics test", score: "18/20" },
+      { title: "Problem set 6", score: "17/20" },
+      { title: "Midterm", score: "19/20" },
     ],
   },
   {
     id: "english",
     name: "English",
     teacher: "Mr. Adeyemi",
-    grade: "B+",
-    percentage: 87,
+    mark: 16,
     recent: [
-      { title: "Essay: The Tempest", score: "86%" },
-      { title: "Poetry response", score: "90%" },
-      { title: "Reading quiz 4", score: "84%" },
+      { title: "Essay: The Tempest", score: "16/20" },
+      { title: "Poetry response", score: "18/20" },
+      { title: "Reading quiz 4", score: "16/20" },
     ],
   },
   {
     id: "science",
     name: "Science",
     teacher: "Dr. Ferreira",
-    grade: "A",
-    percentage: 95,
+    mark: 19,
     recent: [
-      { title: "Lab report: Enzymes", score: "97%" },
-      { title: "Unit 3 test", score: "93%" },
-      { title: "Field study", score: "95%" },
+      { title: "Lab report: Enzymes", score: "19/20" },
+      { title: "Unit 3 test", score: "18/20" },
+      { title: "Field study", score: "19/20" },
     ],
   },
   {
     id: "history",
     name: "History",
     teacher: "Mrs. Okonkwo",
-    grade: "B",
-    percentage: 83,
+    mark: 15,
     recent: [
-      { title: "Source analysis", score: "81%" },
-      { title: "Cold War quiz", score: "85%" },
-      { title: "Debate brief", score: "83%" },
+      { title: "Source analysis", score: "15/20" },
+      { title: "Cold War quiz", score: "16/20" },
+      { title: "Debate brief", score: "15/20" },
     ],
   },
   {
     id: "cs",
     name: "Computer Science",
     teacher: "Mr. Lindqvist",
-    grade: "A",
-    percentage: 96,
+    mark: 19,
     recent: [
-      { title: "Sorting project", score: "98%" },
-      { title: "Recursion quiz", score: "94%" },
-      { title: "Web app sprint", score: "96%" },
+      { title: "Sorting project", score: "20/20" },
+      { title: "Recursion quiz", score: "19/20" },
+      { title: "Web app sprint", score: "19/20" },
     ],
   },
   {
     id: "pe",
     name: "Physical Education",
     teacher: "Coach Byrne",
-    grade: "A-",
-    percentage: 90,
+    mark: 18,
     recent: [
-      { title: "Fitness assessment", score: "90%" },
-      { title: "Team unit: Volleyball", score: "92%" },
-      { title: "Participation", score: "88%" },
+      { title: "Fitness assessment", score: "18/20" },
+      { title: "Team unit: Volleyball", score: "18/20" },
+      { title: "Participation", score: "17/20" },
     ],
   },
 ];
 
-export const gpa = 3.7;
-
-export type AssignmentStatus = "upcoming" | "completed" | "overdue";
-
-export type Assignment = {
-  id: string;
-  title: string;
-  subject: string;
-  due: string;
-  status: AssignmentStatus;
-  grade?: string;
-  description: string;
-};
-
-export const assignments: Assignment[] = [
-  {
-    id: "a1",
-    title: "Quadratic functions problem set",
-    subject: "Mathematics",
-    due: "2026-09-12",
-    status: "upcoming",
-    description:
-      "Complete problems 1–24 in chapter 7. Show all working, including the discriminant for each root calculation.",
-  },
-  {
-    id: "a2",
-    title: "Essay: Power in The Tempest",
-    subject: "English",
-    due: "2026-09-15",
-    status: "upcoming",
-    description:
-      "A 1,200-word analytical essay on how Shakespeare presents power and control. Use at least four quotations.",
-  },
-  {
-    id: "a3",
-    title: "Enzyme lab report",
-    subject: "Science",
-    due: "2026-09-04",
-    status: "completed",
-    grade: "97%",
-    description:
-      "Full write-up of the catalase practical: hypothesis, method, results table, graph, and evaluation.",
-  },
-  {
-    id: "a4",
-    title: "Cold War source analysis",
-    subject: "History",
-    due: "2026-09-02",
-    status: "overdue",
-    description:
-      "Compare two contemporary sources on the Berlin Airlift and evaluate their reliability in 600 words.",
-  },
-  {
-    id: "a5",
-    title: "Sorting algorithms project",
-    subject: "Computer Science",
-    due: "2026-09-01",
-    status: "completed",
-    grade: "98%",
-    description:
-      "Implement bubble, merge, and quick sort, then benchmark them on datasets of 10, 1k, and 100k items.",
-  },
-  {
-    id: "a6",
-    title: "Fitness log — week 3",
-    subject: "Physical Education",
-    due: "2026-09-18",
-    status: "upcoming",
-    description: "Record three training sessions with duration, intensity, and a short reflection.",
-  },
-  {
-    id: "a7",
-    title: "Poetry response journal",
-    subject: "English",
-    due: "2026-08-28",
-    status: "overdue",
-    description: "Two-page journal responding to the anthology's war poetry selection.",
-  },
+export const missedDays = [
+  { id: "attendance-1", date: "2026-09-08", reason: "Medical appointment", periods: 2 },
+  { id: "attendance-2", date: "2026-08-27", reason: "Family matter", periods: 1 },
 ];
 
 export type Activity = {
@@ -350,9 +268,9 @@ export const announcements = [
 
 export const profile = {
   name: "Alex User",
-  studentId: "ALD-2026-0148",
+  studentId: "HMA-2026-0148",
   year: "Grade 11",
-  email: "alex.user@aldridge.edu",
+  email: "alex.user@himamalmaali.edu",
   className: "11-B",
   homeroom: "Mrs. Okonkwo",
 };

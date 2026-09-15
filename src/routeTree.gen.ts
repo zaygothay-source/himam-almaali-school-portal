@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EditorRouteImport } from './routes/editor'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as SchoolRouteImport } from './routes/school'
 import { Route as StaffRouteImport } from './routes/staff'
@@ -23,12 +24,18 @@ import { Route as PortalScheduleRouteImport } from './routes/portal.schedule'
 import { Route as PortalSettingsRouteImport } from './routes/portal.settings'
 import { Route as StaffIndexRouteImport } from './routes/staff.index'
 import { Route as StaffAccountsRouteImport } from './routes/staff.accounts'
+import { Route as StaffGradesRouteImport } from './routes/staff.grades'
 import { Route as StaffHomeworkRouteImport } from './routes/staff.homework'
 import { Route as StaffStudentsRouteImport } from './routes/staff.students'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorRoute = EditorRouteImport.update({
+  id: '/editor',
+  path: '/editor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortalRoute = PortalRouteImport.update({
@@ -96,6 +103,11 @@ const StaffAccountsRoute = StaffAccountsRouteImport.update({
   path: '/accounts',
   getParentRoute: () => StaffRoute,
 } as any)
+const StaffGradesRoute = StaffGradesRouteImport.update({
+  id: '/grades',
+  path: '/grades',
+  getParentRoute: () => StaffRoute,
+} as any)
 const StaffHomeworkRoute = StaffHomeworkRouteImport.update({
   id: '/homework',
   path: '/homework',
@@ -109,6 +121,7 @@ const StaffStudentsRoute = StaffStudentsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/editor': typeof EditorRoute
   '/portal': typeof PortalRouteWithChildren
   '/school': typeof SchoolRoute
   '/staff': typeof StaffRouteWithChildren
@@ -120,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/portal/schedule': typeof PortalScheduleRoute
   '/portal/settings': typeof PortalSettingsRoute
   '/staff/accounts': typeof StaffAccountsRoute
+  '/staff/grades': typeof StaffGradesRoute
   '/staff/homework': typeof StaffHomeworkRoute
   '/staff/students': typeof StaffStudentsRoute
   '/portal/': typeof PortalIndexRoute
@@ -127,6 +141,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/editor': typeof EditorRoute
   '/school': typeof SchoolRoute
   '/portal/activities': typeof PortalActivitiesRoute
   '/portal/assignments': typeof PortalAssignmentsRoute
@@ -136,6 +151,7 @@ export interface FileRoutesByTo {
   '/portal/schedule': typeof PortalScheduleRoute
   '/portal/settings': typeof PortalSettingsRoute
   '/staff/accounts': typeof StaffAccountsRoute
+  '/staff/grades': typeof StaffGradesRoute
   '/staff/homework': typeof StaffHomeworkRoute
   '/staff/students': typeof StaffStudentsRoute
   '/portal': typeof PortalIndexRoute
@@ -144,6 +160,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/editor': typeof EditorRoute
   '/portal': typeof PortalRouteWithChildren
   '/school': typeof SchoolRoute
   '/staff': typeof StaffRouteWithChildren
@@ -155,6 +172,7 @@ export interface FileRoutesById {
   '/portal/schedule': typeof PortalScheduleRoute
   '/portal/settings': typeof PortalSettingsRoute
   '/staff/accounts': typeof StaffAccountsRoute
+  '/staff/grades': typeof StaffGradesRoute
   '/staff/homework': typeof StaffHomeworkRoute
   '/staff/students': typeof StaffStudentsRoute
   '/portal/': typeof PortalIndexRoute
@@ -164,6 +182,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/editor'
     | '/portal'
     | '/school'
     | '/staff'
@@ -175,6 +194,7 @@ export interface FileRouteTypes {
     | '/portal/schedule'
     | '/portal/settings'
     | '/staff/accounts'
+    | '/staff/grades'
     | '/staff/homework'
     | '/staff/students'
     | '/portal/'
@@ -182,6 +202,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/editor'
     | '/school'
     | '/portal/activities'
     | '/portal/assignments'
@@ -191,6 +212,7 @@ export interface FileRouteTypes {
     | '/portal/schedule'
     | '/portal/settings'
     | '/staff/accounts'
+    | '/staff/grades'
     | '/staff/homework'
     | '/staff/students'
     | '/portal'
@@ -198,6 +220,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/editor'
     | '/portal'
     | '/school'
     | '/staff'
@@ -209,6 +232,7 @@ export interface FileRouteTypes {
     | '/portal/schedule'
     | '/portal/settings'
     | '/staff/accounts'
+    | '/staff/grades'
     | '/staff/homework'
     | '/staff/students'
     | '/portal/'
@@ -217,6 +241,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EditorRoute: typeof EditorRoute
   PortalRoute: typeof PortalRouteWithChildren
   SchoolRoute: typeof SchoolRoute
   StaffRoute: typeof StaffRouteWithChildren
@@ -229,6 +254,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editor': {
+      id: '/editor'
+      path: '/editor'
+      fullPath: '/editor'
+      preLoaderRoute: typeof EditorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/portal': {
@@ -322,6 +354,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffAccountsRouteImport
       parentRoute: typeof StaffRoute
     }
+    '/staff/grades': {
+      id: '/staff/grades'
+      path: '/grades'
+      fullPath: '/staff/grades'
+      preLoaderRoute: typeof StaffGradesRouteImport
+      parentRoute: typeof StaffRoute
+    }
     '/staff/homework': {
       id: '/staff/homework'
       path: '/homework'
@@ -366,6 +405,7 @@ const PortalRouteWithChildren =
 
 interface StaffRouteChildren {
   StaffAccountsRoute: typeof StaffAccountsRoute
+  StaffGradesRoute: typeof StaffGradesRoute
   StaffHomeworkRoute: typeof StaffHomeworkRoute
   StaffStudentsRoute: typeof StaffStudentsRoute
   StaffIndexRoute: typeof StaffIndexRoute
@@ -373,6 +413,7 @@ interface StaffRouteChildren {
 
 const StaffRouteChildren: StaffRouteChildren = {
   StaffAccountsRoute: StaffAccountsRoute,
+  StaffGradesRoute: StaffGradesRoute,
   StaffHomeworkRoute: StaffHomeworkRoute,
   StaffStudentsRoute: StaffStudentsRoute,
   StaffIndexRoute: StaffIndexRoute,
@@ -382,6 +423,7 @@ const StaffRouteWithChildren = StaffRoute._addFileChildren(StaffRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EditorRoute: EditorRoute,
   PortalRoute: PortalRouteWithChildren,
   SchoolRoute: SchoolRoute,
   StaffRoute: StaffRouteWithChildren,

@@ -6,13 +6,13 @@ export const Route = createFileRoute("/school")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Aldridge School | Where Curiosity Is Taught" },
+      { title: "Himam Almaali | Where Curiosity Is Taught" },
       {
         name: "description",
         content:
-          "Aldridge is a K-12 independent school where small classes, real mentorship, and ambitious academics prepare students for what comes next.",
+          "Himam Almaali is a K-12 independent school where small classes, real mentorship, and ambitious academics prepare students for what comes next.",
       },
-      { property: "og:title", content: "Aldridge School | Where Curiosity Is Taught" },
+      { property: "og:title", content: "Himam Almaali | Where Curiosity Is Taught" },
       {
         property: "og:description",
         content:
@@ -43,9 +43,9 @@ function Navigation() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <a href="#top" className="flex items-center gap-2.5">
           <span className="grid size-8 place-items-center rounded-md bg-primary text-primary-foreground font-display text-lg font-semibold leading-none">
-            A
+            H
           </span>
-          <span className="font-display text-lg font-semibold tracking-tight">Aldridge</span>
+          <span className="font-display text-lg font-semibold tracking-tight">Himam Almaali</span>
         </a>
         <div className="hidden items-center gap-8 text-sm md:flex">
           <a
@@ -91,7 +91,7 @@ function Hero() {
             A place where <span className="italic text-primary">curiosity</span> is taught.
           </h1>
           <p className="rise mt-6 max-w-[46ch] text-lg text-pretty text-foreground/70 [animation-delay:160ms]">
-            Aldridge is a K&ndash;12 independent school where small classes, real mentorship, and a
+            Himam Almaali is a K&ndash;12 independent school where small classes, real mentorship, and a
             love of the outdoors meet ambitious academics.
           </p>
           <div className="rise mt-8 flex flex-wrap gap-3 [animation-delay:240ms]">
@@ -225,7 +225,7 @@ function Admissions() {
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a
-                  href="mailto:hello@aldridge.edu?subject=Campus tour request"
+                  href="mailto:hello@himamalmaali.edu?subject=Campus tour request"
                   className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
                 >
                   <span className="relative z-10">Book a tour</span>
@@ -327,7 +327,7 @@ function News() {
             </article>
             <article className="group rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40">
               <p className="font-mono text-xs text-foreground/50">Milestone</p>
-              <h3 className="mt-3 font-display text-xl tracking-tight">Aldridge earns its third honor</h3>
+              <h3 className="mt-3 font-display text-xl tracking-tight">Himam Almaali earns its third honor</h3>
               <p className="mt-2 text-sm text-pretty text-foreground/60">
                 Recognized for teaching innovation in the 2025 national review.
               </p>
@@ -346,9 +346,9 @@ function Footer() {
         <div>
           <div className="flex items-center gap-2.5">
             <span className="grid size-8 place-items-center rounded-md bg-primary text-primary-foreground font-display text-lg font-semibold leading-none">
-              A
+              H
             </span>
-            <span className="font-display text-lg font-semibold tracking-tight">Aldridge School</span>
+            <span className="font-display text-lg font-semibold tracking-tight">Himam Almaali</span>
           </div>
           <p className="mt-4 max-w-[34ch] text-sm text-pretty text-foreground/60">
             112 Waterline Road, Estuary WA 98001
@@ -357,8 +357,8 @@ function Footer() {
               (206) 555-0142
             </a>{" "}
             &middot;{" "}
-            <a href="mailto:hello@aldridge.edu" className="hover:text-foreground">
-              hello@aldridge.edu
+            <a href="mailto:hello@himamalmaali.edu" className="hover:text-foreground">
+              hello@himamalmaali.edu
             </a>
           </p>
         </div>
@@ -389,7 +389,7 @@ function Footer() {
           <ul className="mt-4 space-y-2.5 text-sm">
             <li>
               <a
-                href="mailto:hello@aldridge.edu?subject=Campus tour request"
+                href="mailto:hello@himamalmaali.edu?subject=Campus tour request"
                 className="text-foreground/75 transition-colors hover:text-foreground"
               >
                 Book a tour
@@ -409,7 +409,7 @@ function Footer() {
         </div>
       </div>
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-6 pb-8 text-xs text-foreground/45">
-        <p>&copy; 2026 Aldridge School. A fictional prototype.</p>
+        <p>&copy; 2026 Himam Almaali. A fictional prototype.</p>
         <div className="flex gap-5">
           <a href="#top" className="transition-colors hover:text-foreground/80">
             Privacy

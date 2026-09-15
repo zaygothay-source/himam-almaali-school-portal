@@ -22,3 +22,13 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+## Cloudflare Workers deployment
+
+After signing in with Wrangler (`pnpm dlx wrangler login`), deploy the production build with:
+
+```sh
+pnpm deploy:cloudflare
+```
+
+The deployment uses the Worker name `TestName`. If the Cloudflare account subdomain is `TestAztx`, the public address will be `https://testname.testaztx.workers.dev` (domain names are case-insensitive).

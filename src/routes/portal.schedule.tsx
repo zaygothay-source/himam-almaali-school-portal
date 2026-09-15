@@ -1,16 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { schedule } from "@/lib/portal-data";
+import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/portal/schedule")({
   component: SchedulePage,
 });
 
 function SchedulePage() {
+  const { t } = useLanguage();
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="text-2xl font-semibold text-foreground">Weekly schedule</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Monday to Friday timetable.</p>
+        <h1 className="text-2xl font-semibold text-foreground">{t("Weekly schedule")}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t("Monday to Friday timetable.")}</p>
       </header>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">

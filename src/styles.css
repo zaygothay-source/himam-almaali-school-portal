@@ -106,6 +106,16 @@
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
+/* Optional school palettes selected from Settings. */
+.theme-blue {
+  --background: hsl(210 25% 97%); --foreground: hsl(220 30% 15%); --card: hsl(0 0% 100%); --card-2: hsl(210 30% 94%); --card-foreground: hsl(220 30% 15%); --popover: hsl(0 0% 100%); --popover-foreground: hsl(220 30% 15%); --primary: hsl(214 82% 45%); --primary-foreground: hsl(0 0% 100%); --secondary: hsl(210 25% 91%); --secondary-foreground: hsl(220 30% 15%); --muted: hsl(210 20% 88%); --muted-foreground: hsl(220 15% 42%); --accent: hsl(210 30% 91%); --accent-foreground: hsl(220 30% 15%); --border: hsl(220 18% 84%); --input: hsl(220 18% 78%); --ring: hsl(214 82% 45%); --sidebar: hsl(215 30% 95%); --sidebar-foreground: hsl(220 30% 15%); --sidebar-primary: hsl(214 82% 45%); --sidebar-primary-foreground: hsl(0 0% 100%); --sidebar-accent: hsl(210 30% 91%); --sidebar-accent-foreground: hsl(220 30% 15%); --sidebar-border: hsl(220 18% 84%); --sidebar-ring: hsl(214 82% 45%);
+}
+.theme-paper {
+  --background: hsl(0 0% 100%); --foreground: hsl(0 0% 8%); --card: hsl(0 0% 98%); --card-2: hsl(0 0% 94%); --card-foreground: hsl(0 0% 8%); --popover: hsl(0 0% 100%); --popover-foreground: hsl(0 0% 8%); --primary: hsl(0 0% 10%); --primary-foreground: hsl(0 0% 100%); --secondary: hsl(0 0% 92%); --secondary-foreground: hsl(0 0% 8%); --muted: hsl(0 0% 89%); --muted-foreground: hsl(0 0% 38%); --accent: hsl(0 0% 91%); --accent-foreground: hsl(0 0% 8%); --border: hsl(0 0% 82%); --input: hsl(0 0% 76%); --ring: hsl(0 0% 10%); --sidebar: hsl(0 0% 96%); --sidebar-foreground: hsl(0 0% 8%); --sidebar-primary: hsl(0 0% 10%); --sidebar-primary-foreground: hsl(0 0% 100%); --sidebar-accent: hsl(0 0% 91%); --sidebar-accent-foreground: hsl(0 0% 8%); --sidebar-border: hsl(0 0% 82%); --sidebar-ring: hsl(0 0% 10%);
+}
+.theme-forest { --primary: hsl(152 55% 38%); --primary-foreground: hsl(0 0% 100%); --ring: hsl(152 55% 38%); --chart-1: hsl(152 55% 38%); }
+.theme-plum { --primary: hsl(282 58% 58%); --primary-foreground: hsl(0 0% 100%); --ring: hsl(282 58% 58%); --chart-1: hsl(282 58% 58%); }
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -135,6 +145,62 @@
   animation: sheen 1s cubic-bezier(0.32, 0.72, 0, 1) 2s both;
 }
 
+@utility page-enter {
+  animation: page-enter 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility card-lift {
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease, border-color 260ms ease;
+}
+
+@utility glow-pulse {
+  animation: glow-pulse 3.5s ease-in-out infinite;
+}
+
+@utility mode-swap {
+  animation: mode-swap 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.login-shell {
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.login-shell::before,
+.login-shell::after {
+  position: absolute;
+  z-index: -1;
+  width: 22rem;
+  height: 22rem;
+  border-radius: 9999px;
+  content: "";
+  filter: blur(2px);
+  opacity: 0.16;
+  pointer-events: none;
+}
+
+.login-shell::before {
+  top: -9rem;
+  left: -8rem;
+  background: var(--primary);
+  animation: orb-drift 12s ease-in-out infinite alternate;
+}
+
+.login-shell::after {
+  right: -9rem;
+  bottom: -10rem;
+  background: var(--primary);
+  animation: orb-drift 15s ease-in-out -3s infinite alternate-reverse;
+}
+
+@media (hover: hover) {
+  .card-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 45px hsl(220 30% 10% / 0.12);
+    border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+  }
+}
+
 @keyframes rise {
   from {
     opacity: 0;
@@ -155,5 +221,53 @@
   }
   100% {
     transform: translateX(320%) skewX(-16deg);
+  }
+}
+
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes orb-drift {
+  from { transform: translate3d(-10px, 8px, 0) scale(0.96); }
+  to { transform: translate3d(18px, -14px, 0) scale(1.06); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(from var(--primary) h s l / 0); }
+  50% { box-shadow: 0 0 0 7px hsl(from var(--primary) h s l / 0.12); }
+}
+
+@keyframes mode-swap {
+  from { opacity: 0; transform: translateY(-5px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Keep the portal usable on narrow phones while preserving horizontal table scrolling. */
+html,
+body,
+#root {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 640px) {
+  .login-shell {
+    align-items: flex-start;
+    padding-top: 7.5rem;
+  }
+
+  .login-shell > div {
+    padding: 1.25rem;
   }
 }

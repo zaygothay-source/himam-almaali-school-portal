@@ -2,20 +2,21 @@ import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tan
 import { useEffect, useState } from "react";
 import { ClipboardList, LayoutDashboard, LogOut, Menu, UserPlus, Users, X } from "lucide-react";
 import { logout, useHydrated, useSession } from "@/lib/auth";
+import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/staff")({
   head: () => ({
     meta: [
-      { title: "Staff Portal — Aldridge School" },
+      { title: "Staff Portal — Himam Almaali" },
       {
         name: "description",
         content:
-          "Aldridge School staff portal: publish homework and assignments, view your student list and create new student logins.",
+          "Himam Almaali staff portal: manage students, attendance and grades.",
       },
-      { property: "og:title", content: "Staff Portal — Aldridge School" },
+      { property: "og:title", content: "Staff Portal — Himam Almaali" },
       {
         property: "og:description",
-        content: "Publish homework, manage students and create new student logins.",
+        content: "Manage students, attendance and subject grades.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -26,9 +27,9 @@ export const Route = createFileRoute("/staff")({
 
 const nav = [
   { to: "/staff", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/staff/homework", label: "Homework & assignments", icon: ClipboardList },
   { to: "/staff/students", label: "Students", icon: Users },
-  { to: "/staff/accounts", label: "New student login", icon: UserPlus },
+  { to: "/staff/grades", label: "See grades", icon: ClipboardList },
+  { to: "/staff/accounts", label: "Management", icon: UserPlus },
 ] as const;
 
 function StaffLayout() {
@@ -37,26 +38,27 @@ function StaffLayout() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { t } = useLanguage();
 
   useEffect(() => {
-    if (hydrated && (!session || session.role !== "teacher")) navigate({ to: "/" });
+    if (hydrated && (!session || !["teacher", "principal", "organizer"].includes(session.role))) navigate({ to: "/" });
   }, [hydrated, session, navigate]);
 
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
 
-  if (!hydrated || !session || session.role !== "teacher") {
+  if (!hydrated || !session || !["teacher", "principal", "organizer"].includes(session.role)) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">
-        Loading the staff portal…
+        {t("Loading the staff portal…")}
       </div>
     );
   }
 
   const menu = (
     <nav className="flex flex-col gap-1 p-3">
-      {nav.map((item) => (
+      {nav.filter((item) => session.role === "principal" || session.role === "organizer" ? item.to === "/staff/accounts" : item.to === "/staff/students" || item.to === "/staff/grades").map((item) => (
         <Link
           key={item.to}
           to={item.to}
@@ -66,7 +68,7 @@ function StaffLayout() {
           className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors"
         >
           <item.icon className="h-4 w-4" />
-          {item.label}
+          {t(item.label)}
         </Link>
       ))}
       <button
@@ -78,7 +80,7 @@ function StaffLayout() {
         className="mt-2 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
       >
         <LogOut className="h-4 w-4" />
-        Logout
+        {t("Logout")}
       </button>
     </nav>
   );
@@ -88,11 +90,11 @@ function StaffLayout() {
       <aside className="hidden w-72 shrink-0 border-r border-border bg-card md:block">
         <div className="flex items-center gap-3 border-b border-border px-5 py-5">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-            A
+            H
           </div>
           <div>
-            <p className="text-sm font-semibold text-foreground">Aldridge School</p>
-            <p className="text-xs text-muted-foreground">Staff portal</p>
+            <p className="text-sm font-semibold text-foreground">Himam Almaali</p>
+            <p className="text-xs text-muted-foreground">{session.role === "principal" ? `${t("Principal")} ${t("portal")}` : session.role === "organizer" ? `${t("Organizer")} ${t("portal")}` : `${t("Teacher")} ${t("portal")}`}</p>
           </div>
         </div>
         {menu}
@@ -103,7 +105,7 @@ function StaffLayout() {
           <div className="absolute inset-0 bg-black/60" onClick={() => setOpen(false)} />
           <div className="absolute inset-y-0 left-0 w-72 border-r border-border bg-card shadow-xl">
             <div className="flex items-center justify-between border-b border-border px-5 py-4">
-              <p className="text-sm font-semibold text-foreground">Aldridge School</p>
+              <p className="text-sm font-semibold text-foreground">Himam Almaali</p>
               <button type="button" aria-label="Close menu" onClick={() => setOpen(false)}>
                 <X className="h-5 w-5 text-muted-foreground" />
               </button>
@@ -124,13 +126,11 @@ function StaffLayout() {
             <Menu className="h-5 w-5" />
           </button>
           <p className="text-sm font-medium text-foreground">
-            {nav.find((n) => n.to === pathname)?.label ?? "Dashboard"}
+            {t(nav.find((n) => n.to === pathname)?.label ?? "Dashboard")}
           </p>
-          <span className="ml-auto text-sm text-muted-foreground">
-            {session.name} · {session.username}
-          </span>
+          <span className="ml-auto max-w-[55vw] truncate text-sm text-muted-foreground">{session.name} · {session.username}</span>
         </header>
-        <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
+        <main className="page-enter flex-1 px-4 py-6 md:px-8 md:py-8">
           <Outlet />
         </main>
       </div>

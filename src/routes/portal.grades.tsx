@@ -1,16 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { gpa, subjects } from "@/lib/portal-data";
+import { subjects } from "@/lib/portal-data";
+import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/portal/grades")({
   component: GradesPage,
 });
 
 function GradesPage() {
+  const { t } = useLanguage();
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="text-2xl font-semibold text-foreground">Grades</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Current GPA {gpa.toFixed(2)} · {subjects.length} subjects</p>
+        <h1 className="text-2xl font-semibold text-foreground">{t("Grades")}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t("Marks for")} {subjects.length} {t("subjects, each scored out of 20.")}</p>
       </header>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -21,16 +23,16 @@ function GradesPage() {
                 <h2 className="text-base font-semibold text-foreground">{s.name}</h2>
                 <p className="text-sm text-muted-foreground">{s.teacher}</p>
               </div>
-              <span className="rounded-md bg-primary/15 px-2.5 py-1 text-sm font-semibold text-primary">{s.grade}</span>
+              <span className="rounded-md bg-primary/15 px-2.5 py-1 text-sm font-semibold text-primary">{s.mark}/20</span>
             </div>
 
             <div className="mt-4">
               <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span>Progress</span>
-                <span>{s.percentage}%</span>
+                <span>{t("Progress")}</span>
+                <span>{s.mark}/20</span>
               </div>
               <div className="mt-1.5 h-2 w-full rounded-full bg-muted">
-                <div className="h-2 rounded-full bg-primary transition-all" style={{ width: `${s.percentage}%` }} />
+                <div className="h-2 rounded-full bg-primary transition-all" style={{ width: `${s.mark * 5}%` }} />
               </div>
             </div>
 

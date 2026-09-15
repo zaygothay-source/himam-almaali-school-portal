@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { daysUntil, exams, formatDate, type Exam } from "@/lib/portal-data";
+import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/portal/exams")({
   component: ExamsPage,
@@ -8,12 +9,13 @@ export const Route = createFileRoute("/portal/exams")({
 
 function ExamsPage() {
   const [selected, setSelected] = useState<Exam | null>(null);
+  const { t } = useLanguage();
 
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="text-2xl font-semibold text-foreground">Exams</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Select an exam for topics and details.</p>
+        <h1 className="text-2xl font-semibold text-foreground">{t("Exams")}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t("Select an exam for topics and details.")}</p>
       </header>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -30,7 +32,7 @@ function ExamsPage() {
                 <p className="text-sm text-muted-foreground">{e.subject}</p>
               </div>
               <span className="rounded-md bg-primary/15 px-2.5 py-1 text-xs font-semibold text-primary">
-                {daysUntil(e.date)} days
+                {daysUntil(e.date)} {t("days")}
               </span>
             </div>
             <p className="mt-3 text-sm text-foreground">{formatDate(e.date)} · {e.time}</p>
@@ -47,23 +49,23 @@ function ExamsPage() {
             <p className="mt-1 text-sm text-muted-foreground">{selected.subject}</p>
             <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
               <div>
-                <dt className="text-muted-foreground">Date</dt>
+                <dt className="text-muted-foreground">{t("Date")}</dt>
                 <dd className="font-medium text-foreground">{formatDate(selected.date)}</dd>
               </div>
               <div>
-                <dt className="text-muted-foreground">Time</dt>
+                <dt className="text-muted-foreground">{t("Time")}</dt>
                 <dd className="font-medium text-foreground">{selected.time}</dd>
               </div>
               <div>
-                <dt className="text-muted-foreground">Location</dt>
+                <dt className="text-muted-foreground">{t("Location")}</dt>
                 <dd className="font-medium text-foreground">{selected.location}</dd>
               </div>
               <div>
-                <dt className="text-muted-foreground">Countdown</dt>
-                <dd className="font-medium text-foreground">{daysUntil(selected.date)} days</dd>
+                <dt className="text-muted-foreground">{t("Countdown")}</dt>
+                <dd className="font-medium text-foreground">{daysUntil(selected.date)} {t("days")}</dd>
               </div>
             </dl>
-            <p className="mt-4 text-sm font-medium text-foreground">Topics covered</p>
+            <p className="mt-4 text-sm font-medium text-foreground">{t("Topics covered")}</p>
             <ul className="mt-2 flex flex-wrap gap-2">
               {selected.topics.map((t) => (
                 <li key={t} className="rounded-full bg-muted px-3 py-1 text-xs text-foreground">
@@ -76,7 +78,7 @@ function ExamsPage() {
               onClick={() => setSelected(null)}
               className="mt-6 w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
             >
-              Close
+              {t("Close")}
             </button>
           </div>
         </div>

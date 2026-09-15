@@ -8,6 +8,7 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
+    "deploy:cloudflare": "pnpm build && pnpm dlx wrangler deploy --config .output/server/wrangler.json --name TestName",
     "lint": "eslint .",
     "format": "prettier --write ."
   },

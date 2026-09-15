@@ -1,9 +1,9 @@
 import { useSyncExternalStore } from "react";
 import { getStore } from "@/lib/school-store";
 
-const KEY = "aldridge-portal-session";
+const KEY = "himam-almaali-portal-session";
 
-export type Role = "student" | "teacher";
+export type Role = "student" | "teacher" | "principal" | "organizer";
 export type Session = { username: string; role: Role; name: string } | null;
 
 let cached: Session = null;
@@ -37,19 +37,36 @@ export function subscribe(cb: () => void) {
   };
 }
 
-export const DEMO_USER = "User";
-export const DEMO_PASSWORD = "password";
-
-export const TEACHERS: { username: string; password: string; name: string }[] = [
-  { username: "Admin", password: "Admin", name: "Ms. Halloran" },
-  { username: "Admin2", password: "Admin2", name: "Mr. Adeyemi" },
-  { username: "Admin3", password: "Admin3", name: "Dr. Ferreira" },
-];
+export const PRINCIPAL = { username: "Principal", password: "Principal", name: "Principal" };
+export const ORGANIZER = { username: "Organizer", password: "Organizer", name: "Activities Organizer" };
+export const EDITOR = { username: "Aztx", password: "Aztx", name: "Site Editor" };
 
 export function login(username: string, password: string): Session {
   const u = username.trim().toLowerCase();
+  const p = password.trim();
 
-  const teacher = TEACHERS.find((t) => t.username.toLowerCase() === u && t.password === password);
+  if (PRINCIPAL.username.toLowerCase() === u && PRINCIPAL.password === p) {
+    const session: Session = { username: PRINCIPAL.username, role: "principal", name: PRINCIPAL.name };
+    window.localStorage.setItem(KEY, JSON.stringify(session));
+    emit();
+    return session;
+  }
+
+  if (ORGANIZER.username.toLowerCase() === u && ORGANIZER.password === p) {
+    const session: Session = { username: ORGANIZER.username, role: "organizer", name: ORGANIZER.name };
+    window.localStorage.setItem(KEY, JSON.stringify(session));
+    emit();
+    return session;
+  }
+
+  if (EDITOR.username.toLowerCase() === u && EDITOR.password.toLowerCase() === p.toLowerCase()) {
+    const session: Session = { username: EDITOR.username, role: "student", name: EDITOR.name };
+    window.localStorage.setItem(KEY, JSON.stringify(session));
+    emit();
+    return session;
+  }
+
+  const teacher = getStore().teachers.find((t) => t.username.toLowerCase() === u && t.password === p);
   if (teacher) {
     const session: Session = { username: teacher.username, role: "teacher", name: teacher.name };
     window.localStorage.setItem(KEY, JSON.stringify(session));
@@ -58,7 +75,7 @@ export function login(username: string, password: string): Session {
   }
 
   const student = getStore().students.find(
-    (s) => s.username.toLowerCase() === u && s.password === password,
+    (s) => s.username.toLowerCase() === u && s.password === p,
   );
   if (student) {
     const session: Session = { username: student.username, role: "student", name: student.name };

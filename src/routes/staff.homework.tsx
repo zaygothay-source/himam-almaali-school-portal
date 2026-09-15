@@ -31,6 +31,10 @@ function HomeworkPage() {
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState<string | null>(null);
 
+  if (session?.role !== "principal") {
+    return <p className="text-sm text-muted-foreground">Only the Principal can publish or remove school-wide work.</p>;
+  }
+
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     setSaved(null);
@@ -45,7 +49,7 @@ function HomeworkPage() {
       type,
       dueDate,
       instructions: instructions.trim(),
-      publishedBy: session?.username ?? "Admin",
+      publishedBy: session?.username ?? "Teacher",
     });
     setTitle("");
     setDueDate("");

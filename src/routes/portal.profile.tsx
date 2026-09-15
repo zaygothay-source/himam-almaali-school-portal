@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { profile as demoProfile } from "@/lib/portal-data";
+import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/portal/profile")({
   component: ProfilePage,
 });
 
 function ProfilePage() {
+  const { t } = useLanguage();
   const [profile, setProfile] = useState(demoProfile);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(demoProfile);
@@ -22,13 +24,13 @@ function ProfilePage() {
   return (
     <div className="max-w-2xl space-y-6">
       <header>
-        <h1 className="text-2xl font-semibold text-foreground">Profile</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Your student record.</p>
+        <h1 className="text-2xl font-semibold text-foreground">{t("Profile")}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t("Your student record.")}</p>
       </header>
 
       {saved ? (
         <p role="status" className="rounded-md bg-emerald-500/10 px-4 py-2 text-sm text-emerald-400">
-          Profile updated.
+          {t("Profile updated.")}
         </p>
       ) : null}
 
@@ -45,12 +47,12 @@ function ProfilePage() {
 
         {editing ? (
           <form onSubmit={onSubmit} className="mt-6 space-y-4">
-            <Field label="Full name" value={draft.name} onChange={(v) => setDraft({ ...draft, name: v })} />
-            <Field label="Email" value={draft.email} onChange={(v) => setDraft({ ...draft, email: v })} />
-            <Field label="Class" value={draft.className} onChange={(v) => setDraft({ ...draft, className: v })} />
+            <Field label={t("Full name")} value={draft.name} onChange={(v) => setDraft({ ...draft, name: v })} />
+            <Field label={t("Email")} value={draft.email} onChange={(v) => setDraft({ ...draft, email: v })} />
+            <Field label={t("Class")} value={draft.className} onChange={(v) => setDraft({ ...draft, className: v })} />
             <div className="flex gap-2">
               <button type="submit" className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90">
-                Save changes
+                {t("Save changes")}
               </button>
               <button
                 type="button"
@@ -60,18 +62,18 @@ function ProfilePage() {
                 }}
                 className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted"
               >
-                Cancel
+                {t("Cancel")}
               </button>
             </div>
           </form>
         ) : (
           <>
             <dl className="mt-6 grid gap-4 sm:grid-cols-2 text-sm">
-              <Row label="Student ID" value={profile.studentId} />
-              <Row label="Grade / year" value={profile.year} />
-              <Row label="Email" value={profile.email} />
-              <Row label="Class" value={profile.className} />
-              <Row label="Homeroom teacher" value={profile.homeroom} />
+              <Row label={t("Student ID")} value={profile.studentId} />
+              <Row label={t("Grade / year")} value={profile.year} />
+              <Row label={t("Email")} value={profile.email} />
+              <Row label={t("Class")} value={profile.className} />
+              <Row label={t("Homeroom teacher")} value={profile.homeroom} />
             </dl>
             <button
               type="button"
@@ -82,7 +84,7 @@ function ProfilePage() {
               }}
               className="mt-6 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
             >
-              Edit profile
+              {t("Edit profile")}
             </button>
           </>
         )}

@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ClipboardList, UserPlus, Users } from "lucide-react";
 import { useSession } from "@/lib/auth";
 import { useSchoolStore } from "@/lib/school-store";
+import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/staff/")({
   component: StaffDashboard,
@@ -10,7 +11,12 @@ export const Route = createFileRoute("/staff/")({
 function StaffDashboard() {
   const session = useSession();
   const store = useSchoolStore();
+  const { t } = useLanguage();
   const mine = store.published.filter((p) => p.publishedBy === session?.username);
+  const isPrincipal = session?.role === "principal";
+  const assignedStudents = isPrincipal
+    ? store.students
+    : store.students.filter((student) => student.teacherUsername === session?.username);
 
   const today = new Date().toLocaleDateString("en-GB", {
     weekday: "long",
@@ -22,15 +28,15 @@ function StaffDashboard() {
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="text-2xl font-semibold text-foreground">Welcome back, {session?.name}</h1>
+        <h1 className="text-2xl font-semibold text-foreground">{t("Welcome back")}, {session?.name}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{today}</p>
       </header>
 
       <div className="grid gap-4 sm:grid-cols-3">
         {[
-          { label: "Students on roll", value: store.students.length },
-          { label: "Published by you", value: mine.length },
-          { label: "Published school-wide", value: store.published.length },
+          { label: isPrincipal ? t("Students on roll") : t("Students assigned to you"), value: assignedStudents.length },
+          { label: t("Teachers"), value: store.teachers.length },
+          { label: t("Published school-wide"), value: store.published.length },
         ].map((s) => (
           <div key={s.label} className="rounded-xl border border-border bg-card p-5">
             <p className="text-sm text-muted-foreground">{s.label}</p>
@@ -41,9 +47,14 @@ function StaffDashboard() {
 
       <div className="grid gap-4 sm:grid-cols-3">
         {[
-          { to: "/staff/homework", label: "Publish homework", icon: ClipboardList },
-          { to: "/staff/students", label: "Student list", icon: Users },
-          { to: "/staff/accounts", label: "Add a student login", icon: UserPlus },
+          { to: "/staff/students", label: t("View students"), icon: Users },
+          { to: "/staff/grades" as const, label: t("See grades"), icon: ClipboardList },
+          ...(isPrincipal
+            ? [
+                { to: "/staff/homework" as const, label: t("Publish homework"), icon: ClipboardList },
+                { to: "/staff/accounts" as const, label: t("Manage students & teachers"), icon: UserPlus },
+              ]
+            : []),
         ].map((q) => (
           <Link
             key={q.to}
@@ -56,11 +67,11 @@ function StaffDashboard() {
         ))}
       </div>
 
-      <section className="rounded-xl border border-border bg-card p-5">
-        <h2 className="text-lg font-semibold text-foreground">Your latest posts</h2>
+      {isPrincipal ? <section className="rounded-xl border border-border bg-card p-5">
+        <h2 className="text-lg font-semibold text-foreground">{t("Your latest posts")}</h2>
         {mine.length === 0 ? (
           <p className="mt-3 text-sm text-muted-foreground">
-            You haven't published anything yet. Start from “Homework & assignments”.
+            {t("No school-wide posts yet.")}
           </p>
         ) : (
           <ul className="mt-4 space-y-3">
@@ -80,7 +91,7 @@ function StaffDashboard() {
             ))}
           </ul>
         )}
-      </section>
+      </section> : null}
     </div>
   );
 }

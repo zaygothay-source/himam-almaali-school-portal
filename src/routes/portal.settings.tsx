@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { logout } from "@/lib/auth";
+import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/portal/settings")({
   component: SettingsPage,
@@ -8,6 +9,7 @@ export const Route = createFileRoute("/portal/settings")({
 
 function SettingsPage() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [prefs, setPrefs] = useState({
     emailAlerts: true,
     examReminders: true,
@@ -17,22 +19,22 @@ function SettingsPage() {
   const [saved, setSaved] = useState(false);
 
   const toggles: { key: keyof typeof prefs; label: string; hint: string }[] = [
-    { key: "emailAlerts", label: "Email alerts", hint: "Get an email when a new grade is posted." },
-    { key: "examReminders", label: "Exam reminders", hint: "Reminders three days before each exam." },
-    { key: "activityUpdates", label: "Activity updates", hint: "News from clubs you have joined." },
-    { key: "compactView", label: "Compact lists", hint: "Show more rows per screen." },
+    { key: "emailAlerts", label: t("Email alerts"), hint: t("Get an email when a new grade is posted.") },
+    { key: "examReminders", label: t("Exam reminders"), hint: t("Reminders three days before each exam.") },
+    { key: "activityUpdates", label: t("Activity updates"), hint: t("News from clubs you have joined.") },
+    { key: "compactView", label: t("Compact lists"), hint: t("Show more rows per screen.") },
   ];
 
   return (
     <div className="max-w-2xl space-y-6">
       <header>
-        <h1 className="text-2xl font-semibold text-foreground">Settings</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Notification and display preferences.</p>
+        <h1 className="text-2xl font-semibold text-foreground">{t("Settings")}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t("Notification and display preferences.")}</p>
       </header>
 
       {saved ? (
         <p role="status" className="rounded-md bg-emerald-500/10 px-4 py-2 text-sm text-emerald-400">
-          Preferences saved.
+          {t("Preferences saved.")}
         </p>
       ) : null}
 
@@ -62,6 +64,7 @@ function SettingsPage() {
         ))}
       </div>
 
+
       <button
         type="button"
         onClick={() => {
@@ -70,7 +73,7 @@ function SettingsPage() {
         }}
         className="rounded-md border border-destructive/50 px-4 py-2 text-sm font-medium text-destructive transition-colors hover:bg-destructive/10"
       >
-        Log out
+        {t("Logout")}
       </button>
     </div>
   );
