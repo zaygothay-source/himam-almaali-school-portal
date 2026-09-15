@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as SchoolRouteImport } from './routes/school'
+import { Route as StaffRouteImport } from './routes/staff'
 import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as PortalActivitiesRouteImport } from './routes/portal.activities'
 import { Route as PortalAssignmentsRouteImport } from './routes/portal.assignments'
@@ -20,6 +21,10 @@ import { Route as PortalGradesRouteImport } from './routes/portal.grades'
 import { Route as PortalProfileRouteImport } from './routes/portal.profile'
 import { Route as PortalScheduleRouteImport } from './routes/portal.schedule'
 import { Route as PortalSettingsRouteImport } from './routes/portal.settings'
+import { Route as StaffIndexRouteImport } from './routes/staff.index'
+import { Route as StaffAccountsRouteImport } from './routes/staff.accounts'
+import { Route as StaffHomeworkRouteImport } from './routes/staff.homework'
+import { Route as StaffStudentsRouteImport } from './routes/staff.students'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,6 +39,11 @@ const PortalRoute = PortalRouteImport.update({
 const SchoolRoute = SchoolRouteImport.update({
   id: '/school',
   path: '/school',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffRoute = StaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortalIndexRoute = PortalIndexRouteImport.update({
@@ -76,11 +86,32 @@ const PortalSettingsRoute = PortalSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => PortalRoute,
 } as any)
+const StaffIndexRoute = StaffIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffAccountsRoute = StaffAccountsRouteImport.update({
+  id: '/accounts',
+  path: '/accounts',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffHomeworkRoute = StaffHomeworkRouteImport.update({
+  id: '/homework',
+  path: '/homework',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffStudentsRoute = StaffStudentsRouteImport.update({
+  id: '/students',
+  path: '/students',
+  getParentRoute: () => StaffRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/portal': typeof PortalRouteWithChildren
   '/school': typeof SchoolRoute
+  '/staff': typeof StaffRouteWithChildren
   '/portal/activities': typeof PortalActivitiesRoute
   '/portal/assignments': typeof PortalAssignmentsRoute
   '/portal/exams': typeof PortalExamsRoute
@@ -88,7 +119,11 @@ export interface FileRoutesByFullPath {
   '/portal/profile': typeof PortalProfileRoute
   '/portal/schedule': typeof PortalScheduleRoute
   '/portal/settings': typeof PortalSettingsRoute
+  '/staff/accounts': typeof StaffAccountsRoute
+  '/staff/homework': typeof StaffHomeworkRoute
+  '/staff/students': typeof StaffStudentsRoute
   '/portal/': typeof PortalIndexRoute
+  '/staff/': typeof StaffIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -100,13 +135,18 @@ export interface FileRoutesByTo {
   '/portal/profile': typeof PortalProfileRoute
   '/portal/schedule': typeof PortalScheduleRoute
   '/portal/settings': typeof PortalSettingsRoute
+  '/staff/accounts': typeof StaffAccountsRoute
+  '/staff/homework': typeof StaffHomeworkRoute
+  '/staff/students': typeof StaffStudentsRoute
   '/portal': typeof PortalIndexRoute
+  '/staff': typeof StaffIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/portal': typeof PortalRouteWithChildren
   '/school': typeof SchoolRoute
+  '/staff': typeof StaffRouteWithChildren
   '/portal/activities': typeof PortalActivitiesRoute
   '/portal/assignments': typeof PortalAssignmentsRoute
   '/portal/exams': typeof PortalExamsRoute
@@ -114,7 +154,11 @@ export interface FileRoutesById {
   '/portal/profile': typeof PortalProfileRoute
   '/portal/schedule': typeof PortalScheduleRoute
   '/portal/settings': typeof PortalSettingsRoute
+  '/staff/accounts': typeof StaffAccountsRoute
+  '/staff/homework': typeof StaffHomeworkRoute
+  '/staff/students': typeof StaffStudentsRoute
   '/portal/': typeof PortalIndexRoute
+  '/staff/': typeof StaffIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -122,6 +166,7 @@ export interface FileRouteTypes {
     | '/'
     | '/portal'
     | '/school'
+    | '/staff'
     | '/portal/activities'
     | '/portal/assignments'
     | '/portal/exams'
@@ -129,7 +174,11 @@ export interface FileRouteTypes {
     | '/portal/profile'
     | '/portal/schedule'
     | '/portal/settings'
+    | '/staff/accounts'
+    | '/staff/homework'
+    | '/staff/students'
     | '/portal/'
+    | '/staff/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -141,12 +190,17 @@ export interface FileRouteTypes {
     | '/portal/profile'
     | '/portal/schedule'
     | '/portal/settings'
+    | '/staff/accounts'
+    | '/staff/homework'
+    | '/staff/students'
     | '/portal'
+    | '/staff'
   id:
     | '__root__'
     | '/'
     | '/portal'
     | '/school'
+    | '/staff'
     | '/portal/activities'
     | '/portal/assignments'
     | '/portal/exams'
@@ -154,13 +208,18 @@ export interface FileRouteTypes {
     | '/portal/profile'
     | '/portal/schedule'
     | '/portal/settings'
+    | '/staff/accounts'
+    | '/staff/homework'
+    | '/staff/students'
     | '/portal/'
+    | '/staff/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PortalRoute: typeof PortalRouteWithChildren
   SchoolRoute: typeof SchoolRoute
+  StaffRoute: typeof StaffRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -184,6 +243,13 @@ declare module '@tanstack/react-router' {
       path: '/school'
       fullPath: '/school'
       preLoaderRoute: typeof SchoolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff': {
+      id: '/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof StaffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/portal/': {
@@ -242,6 +308,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalSettingsRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/staff/': {
+      id: '/staff/'
+      path: '/'
+      fullPath: '/staff/'
+      preLoaderRoute: typeof StaffIndexRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/accounts': {
+      id: '/staff/accounts'
+      path: '/accounts'
+      fullPath: '/staff/accounts'
+      preLoaderRoute: typeof StaffAccountsRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/homework': {
+      id: '/staff/homework'
+      path: '/homework'
+      fullPath: '/staff/homework'
+      preLoaderRoute: typeof StaffHomeworkRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/students': {
+      id: '/staff/students'
+      path: '/students'
+      fullPath: '/staff/students'
+      preLoaderRoute: typeof StaffStudentsRouteImport
+      parentRoute: typeof StaffRoute
+    }
   }
 }
 
@@ -270,10 +364,27 @@ const PortalRouteChildren: PortalRouteChildren = {
 const PortalRouteWithChildren =
   PortalRoute._addFileChildren(PortalRouteChildren)
 
+interface StaffRouteChildren {
+  StaffAccountsRoute: typeof StaffAccountsRoute
+  StaffHomeworkRoute: typeof StaffHomeworkRoute
+  StaffStudentsRoute: typeof StaffStudentsRoute
+  StaffIndexRoute: typeof StaffIndexRoute
+}
+
+const StaffRouteChildren: StaffRouteChildren = {
+  StaffAccountsRoute: StaffAccountsRoute,
+  StaffHomeworkRoute: StaffHomeworkRoute,
+  StaffStudentsRoute: StaffStudentsRoute,
+  StaffIndexRoute: StaffIndexRoute,
+}
+
+const StaffRouteWithChildren = StaffRoute._addFileChildren(StaffRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PortalRoute: PortalRouteWithChildren,
   SchoolRoute: SchoolRoute,
+  StaffRoute: StaffRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

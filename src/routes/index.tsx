@@ -25,6 +25,7 @@ export const Route = createFileRoute("/")({
 
 function LoginPage() {
   const navigate = useNavigate();
+  const [mode, setMode] = useState<"student" | "teacher">("student");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
@@ -40,12 +41,22 @@ function LoginPage() {
     }
     setLoading(true);
     window.setTimeout(() => {
-      if (login(username, password)) {
-        navigate({ to: "/portal" });
-      } else {
+      const session = login(username, password);
+      if (!session) {
         setError("Those details don't match our records. Try again.");
         setLoading(false);
+        return;
       }
+      if (session.role !== mode) {
+        setError(
+          session.role === "teacher"
+            ? "That's a staff account — switch to Teacher to sign in."
+            : "That's a student account — switch to Student to sign in.",
+        );
+        setLoading(false);
+        return;
+      }
+      navigate({ to: session.role === "teacher" ? "/staff" : "/portal" });
     }, 400);
   }
 
@@ -57,8 +68,31 @@ function LoginPage() {
             A
           </div>
           <h1 className="mt-4 text-2xl font-semibold text-foreground">Aldridge School</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Student portal sign in</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {mode === "teacher" ? "Teacher & admin sign in" : "Student portal sign in"}
+          </p>
         </div>
+
+        <div className="mt-6 grid grid-cols-2 gap-1 rounded-lg border border-border bg-muted/40 p-1">
+          {(["student", "teacher"] as const).map((m) => (
+            <button
+              key={m}
+              type="button"
+              onClick={() => {
+                setMode(m);
+                setError(null);
+              }}
+              className={`rounded-md px-3 py-2 text-sm font-medium capitalize transition-colors ${
+                mode === m
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {m === "teacher" ? "Log in as admin" : "Student"}
+            </button>
+          ))}
+        </div>
+
 
         <form onSubmit={onSubmit} className="mt-8 space-y-4" noValidate>
           <div className="space-y-1.5">
@@ -125,8 +159,18 @@ function LoginPage() {
         </form>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
-          Demo access — username <span className="font-medium text-foreground">User</span>, password{" "}
-          <span className="font-medium text-foreground">password</span>
+          {mode === "teacher" ? (
+            <>
+              Demo staff access — <span className="font-medium text-foreground">Admin / Admin</span>,{" "}
+              <span className="font-medium text-foreground">Admin2 / Admin2</span> or{" "}
+              <span className="font-medium text-foreground">Admin3 / Admin3</span>
+            </>
+          ) : (
+            <>
+              Demo access — username <span className="font-medium text-foreground">User</span>, password{" "}
+              <span className="font-medium text-foreground">password</span>
+            </>
+          )}
         </p>
       </div>
     </main>
