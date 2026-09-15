@@ -25,6 +25,7 @@ export const Route = createFileRoute("/")({
 
 function LoginPage() {
   const navigate = useNavigate();
+  const [mode, setMode] = useState<"student" | "teacher">("student");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
@@ -40,12 +41,22 @@ function LoginPage() {
     }
     setLoading(true);
     window.setTimeout(() => {
-      if (login(username, password)) {
-        navigate({ to: "/portal" });
-      } else {
+      const session = login(username, password);
+      if (!session) {
         setError("Those details don't match our records. Try again.");
         setLoading(false);
+        return;
       }
+      if (session.role !== mode) {
+        setError(
+          session.role === "teacher"
+            ? "That's a staff account — switch to Teacher to sign in."
+            : "That's a student account — switch to Student to sign in.",
+        );
+        setLoading(false);
+        return;
+      }
+      navigate({ to: session.role === "teacher" ? "/staff" : "/portal" });
     }, 400);
   }
 
