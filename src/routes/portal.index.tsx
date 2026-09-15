@@ -20,7 +20,8 @@ const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Frida
 function DashboardPage() {
   const today = new Date();
   const todayName = dayNames[today.getDay()];
-  const todayLessons = schedule.find((d) => d.day === todayName)?.lessons ?? schedule[0].lessons;
+  const todayLessons = schedule.find((d) => d.day === todayName)?.lessons ?? schedule[0]?.lessons ?? [];
+  const nextExam = exams[0];
   const upcoming = assignments.filter((a) => a.status === "upcoming").slice(0, 4);
   const nextExams = exams.slice(0, 3);
   const recentGrades = subjects.slice(0, 4);
