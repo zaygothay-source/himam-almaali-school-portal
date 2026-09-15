@@ -20,7 +20,8 @@ const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Frida
 function DashboardPage() {
   const today = new Date();
   const todayName = dayNames[today.getDay()];
-  const todayLessons = schedule.find((d) => d.day === todayName)?.lessons ?? schedule[0].lessons;
+  const todayLessons = schedule.find((d) => d.day === todayName)?.lessons ?? schedule[0]?.lessons ?? [];
+  const nextExam = exams[0];
   const upcoming = assignments.filter((a) => a.status === "upcoming").slice(0, 4);
   const nextExams = exams.slice(0, 3);
   const recentGrades = subjects.slice(0, 4);
@@ -49,7 +50,7 @@ function DashboardPage() {
         <Stat label="Overall GPA" value={gpa.toFixed(2)} hint="Out of 4.0" />
         <Stat label="Assignments due" value={String(assignments.filter((a) => a.status === "upcoming").length)} hint="This month" />
         <Stat label="Overdue" value={String(assignments.filter((a) => a.status === "overdue").length)} hint="Needs attention" />
-        <Stat label="Next exam" value={`${daysUntil(exams[0].date)}d`} hint={exams[0].subject} />
+        <Stat label="Next exam" value={nextExam ? `${daysUntil(nextExam.date)}d` : "—"} hint={nextExam?.subject ?? "None scheduled"} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
