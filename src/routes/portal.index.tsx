@@ -50,7 +50,7 @@ function DashboardPage() {
         <Stat label="Overall GPA" value={gpa.toFixed(2)} hint="Out of 4.0" />
         <Stat label="Assignments due" value={String(assignments.filter((a) => a.status === "upcoming").length)} hint="This month" />
         <Stat label="Overdue" value={String(assignments.filter((a) => a.status === "overdue").length)} hint="Needs attention" />
-        <Stat label="Next exam" value={`${daysUntil(exams[0].date)}d`} hint={exams[0].subject} />
+        <Stat label="Next exam" value={nextExam ? `${daysUntil(nextExam.date)}d` : "—"} hint={nextExam?.subject ?? "None scheduled"} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
