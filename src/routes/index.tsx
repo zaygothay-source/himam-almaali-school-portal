@@ -41,7 +41,7 @@ function LoginPage() {
     setLoading(true);
     window.setTimeout(() => {
       if (login(username, password)) {
-        navigate({ to: "/school" });
+        navigate({ to: "/portal" });
       } else {
         setError("Those details don't match our records. Try again.");
         setLoading(false);
