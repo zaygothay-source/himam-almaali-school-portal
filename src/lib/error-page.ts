@@ -14,6 +14,7 @@ export function renderErrorPage(): string {
       a, button { padding: 0.5rem 1rem; border-radius: 0.375rem; font: inherit; cursor: pointer; text-decoration: none; border: 1px solid transparent; }
       .primary { background: #111; color: #fff; }
       .secondary { background: #fff; color: #111; border-color: #d1d5db; }
+      #retry-status { color: #6b7280; font-size: .875rem; margin-top: .75rem; }
     </style>
   </head>
   <body>
@@ -24,7 +25,23 @@ export function renderErrorPage(): string {
         <button class="primary" onclick="location.reload()">Try again</button>
         <a class="secondary" href="/">Go home</a>
       </div>
+      <div id="retry-status" aria-live="polite"></div>
     </div>
   </body>
+  <script>
+    // Recover automatically from a short-lived Worker/SSR cold-start error,
+    // but stop after two attempts so a persistent failure never loops forever.
+    try {
+      const key = "himam-almaali-error-retries";
+      const attempts = Number(sessionStorage.getItem(key) || "0");
+      if (attempts < 2) {
+        sessionStorage.setItem(key, String(attempts + 1));
+        document.getElementById("retry-status").textContent = "Retrying…";
+        setTimeout(() => location.reload(), 900);
+      } else {
+        sessionStorage.removeItem(key);
+      }
+    } catch (_) {}
+  </script>
 </html>`;
 }

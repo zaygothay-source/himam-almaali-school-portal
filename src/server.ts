@@ -31,8 +31,18 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   console.error(consumeLastCapturedError() ?? new Error(`h3 swallowed SSR error: ${body}`));
   return new Response(renderErrorPage(), {
     status: 500,
-    headers: { "content-type": "text/html; charset=utf-8" },
+    headers: {
+      "content-type": "text/html; charset=utf-8",
+      "cache-control": "no-store, max-age=0",
+    },
   });
+}
+
+async function isH3SwallowedErrorResponse(response: Response): Promise<boolean> {
+  if (response.status < 500) return false;
+  const contentType = response.headers.get("content-type") ?? "";
+  if (!contentType.includes("application/json")) return false;
+  return isH3SwallowedErrorBody(await response.clone().text());
 }
 
 function isH3SwallowedErrorBody(body: string): boolean {
@@ -48,13 +58,25 @@ export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const handler = await getServerEntry();
-      const response = await handler.fetch(request, env, ctx);
+      let response = await handler.fetch(request, env, ctx);
+
+      // A cold Worker can occasionally surface a transient h3 HTTPError while
+      // the server entry is warming up. Retry idempotent document requests once
+      // so visitors do not get stranded on the generic error page.
+      if ((request.method === "GET" || request.method === "HEAD") && (await isH3SwallowedErrorResponse(response))) {
+        console.warn("Retrying transient SSR request", request.url);
+        response = await handler.fetch(request, env, ctx);
+      }
+
       return await normalizeCatastrophicSsrResponse(response);
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {
         status: 500,
-        headers: { "content-type": "text/html; charset=utf-8" },
+        headers: {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "no-store, max-age=0",
+        },
       });
     }
   },
