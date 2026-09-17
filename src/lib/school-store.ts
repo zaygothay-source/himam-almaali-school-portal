@@ -1,6 +1,9 @@
 import { useSyncExternalStore } from "react";
 
-const KEY = "himam-almaali-school-store-v7";
+// Bump this when the demo needs a clean slate across browsers. The previous
+// client-side data remains in old storage keys and can still be recovered from
+// the pre-reset backup if needed.
+const KEY = "himam-almaali-school-store-v8";
 
 export const SUBJECTS = ["Mathematics", "English", "Science", "History", "Computer Science", "Physical Education"] as const;
 export type Subject = (typeof SUBJECTS)[number];

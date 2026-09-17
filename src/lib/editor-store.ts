@@ -28,7 +28,7 @@ type EditorState = {
   dashboardOrder: DashboardPanel[];
   elements: Record<PreviewRole, Record<string, EditableElement>>;
 };
-const KEY = "himam-almaali-editor-content-v1";
+const KEY = "himam-almaali-editor-content-v2";
 
 const element = (role: PreviewRole, id: string, label: string, text: string, overrides: Partial<EditableElement> = {}): EditableElement => ({
   id: `${role}-${id}`,

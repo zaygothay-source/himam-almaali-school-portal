@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from "react";
 import { getStore } from "@/lib/school-store";
 
-const KEY = "himam-almaali-portal-session";
+const KEY = "himam-almaali-portal-session-v2";
 
 export type Role = "student" | "teacher" | "principal" | "organizer";
 export type Session = { username: string; role: Role; name: string } | null;

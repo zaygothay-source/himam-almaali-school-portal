@@ -102,7 +102,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   useEffect(() => {
-    const theme = window.localStorage.getItem("himam-almaali-theme") ?? "blue";
+    const theme = window.localStorage.getItem("himam-almaali-theme-v2") ?? "blue";
     document.documentElement.classList.remove("theme-blue", "theme-paper", "theme-forest", "theme-plum");
     if (theme !== "orange") document.documentElement.classList.add(`theme-${theme}`);
   }, []);

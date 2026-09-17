@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 
 export type Language = "fr" | "ar" | "en";
 
-const KEY = "himam-almaali-language";
+const KEY = "himam-almaali-language-v2";
 
 const translations: Record<string, Record<Language, string>> = {
   "Student portal sign in": { fr: "Connexion au portail étudiant", ar: "تسجيل الدخول إلى بوابة الطالب", en: "Student portal sign in" },

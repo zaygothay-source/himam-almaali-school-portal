@@ -29,7 +29,7 @@ function LoginPage() {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"student" | "admin">("student");
   const [adminRole, setAdminRole] = useState<"teacher" | "principal" | "organizer">("teacher");
-  const [theme, setTheme] = useState(() => typeof window === "undefined" ? "blue" : window.localStorage.getItem("himam-almaali-theme") ?? "blue");
+  const [theme, setTheme] = useState(() => typeof window === "undefined" ? "blue" : window.localStorage.getItem("himam-almaali-theme-v2") ?? "blue");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
@@ -123,7 +123,7 @@ function LoginPage() {
           </div>
           <div className="mt-1 flex gap-1.5">
             {[{ id: "orange", label: "Orange", swatch: "bg-amber-400" }, { id: "paper", label: "B&W", swatch: "bg-black" }, { id: "blue", label: "Blue", swatch: "bg-blue-600" }, { id: "forest", label: "Forest", swatch: "bg-emerald-600" }, { id: "plum", label: "Plum", swatch: "bg-purple-500" }].map((option) => (
-              <button key={option.id} type="button" title={option.label} aria-label={`Use ${option.label} theme`} onClick={() => { setTheme(option.id); window.localStorage.setItem("himam-almaali-theme", option.id); document.documentElement.classList.remove("theme-blue", "theme-paper", "theme-forest", "theme-plum"); if (option.id !== "orange") document.documentElement.classList.add(`theme-${option.id}`); }} className={`rounded-full border p-1 transition-transform hover:scale-110 ${theme === option.id ? "border-primary" : "border-transparent"}`}><span className={`block h-4 w-4 rounded-full ${option.swatch}`} /></button>
+              <button key={option.id} type="button" title={option.label} aria-label={`Use ${option.label} theme`} onClick={() => { setTheme(option.id); window.localStorage.setItem("himam-almaali-theme-v2", option.id); document.documentElement.classList.remove("theme-blue", "theme-paper", "theme-forest", "theme-plum"); if (option.id !== "orange") document.documentElement.classList.add(`theme-${option.id}`); }} className={`rounded-full border p-1 transition-transform hover:scale-110 ${theme === option.id ? "border-primary" : "border-transparent"}`}><span className={`block h-4 w-4 rounded-full ${option.swatch}`} /></button>
             ))}
           </div>
         </div>
